@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактироввать департамент</title>
+</head>
+<body>
+<h1>Редактировать департамент</h1>
+<form th:action="@{/edit_department}" th:object="${department}" method="put">
+    <p>
+        ID:
+        <input type="text" th:field="*{id}"/>
+    </p>
+    <p>
+        Наименование:
+        <input type="text" th:field="*{name}"/>
+    </p>
+    <p>
+        Примечание:
+        <input type="text" th:field="*{note}"/>
+    </p>
+    <button type="submit">Изменить</button>
+</form>
+</body>
+</html>

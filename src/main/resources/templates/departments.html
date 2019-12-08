@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Департаменты</title>
+</head>
+<body>
+<nav class="navbar navbar-light bg-light">
+    <span class="navbar-brand mb-0 h1">Департаменты</span>
+</nav>
+</br>
+<div class="container">
+    <div class="d-flex flex-row justify-content-between">
+        <div class="block">
+            <form action="/add_department/">
+                <button class="btn btn-secondary">Создать новый департамент</button>
+            </form>
+        </div>
+        <div class="block">
+            <form action="/edit_department/">
+                <button class="btn btn-secondary">Редактировать департамент</button>
+            </form>
+        </div>
+    </div>
+    </br>
+    <table class="table">
+        <thead class="thead-default">
+        <tr>
+            <th>ID</th>
+            <th>Наиметование департамента</th>
+            <th>Примечание</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<script src="/js/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script>
+    let tbody = $("tbody");
+    $.ajax({
+            url: "/departments",
+            method: "POST",
+            dataType: "json",
+            success: (response) => {
+                response.forEach(
+                    (department) => {
+                        let buttons = $("<td>");
+                        buttons.append($("<a>").attr("href", department.id).addClass("delete").text("Удалить"));
+
+                        $("<tr>")
+                            .append($("<td>").text(department.id))
+                            .append($("<td>").text(department.name))
+                            .append($("<td>").text(department.note))
+                            .append(buttons)
+                            .appendTo(tbody);
+
+                        buttons.find(".delete").click((event) => {
+                            event.preventDefault();
+                        let parent = $(event.target).parent().parent();
+                        let url = "/departments/" + $(event.target).attr("href");
+                        $.ajax({
+                                url: url,
+                                method: "DELETE",
+                                success: (response) => {
+                                    console.log(response);
+                                    parent.remove();
+                                    }
+                                });
+                        });
+                    }
+                );
+            },
+            error: () => { alert("Ошибка получения списка департаментов"); }
+    });
+</script>
+</body>
+</html>

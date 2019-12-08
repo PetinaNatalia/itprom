@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Создать новый департамент</title>
+</head>
+<body>
+<h1>Создать новый департамент</h1>
+<form th:action="@{/add_department}" th:object="${department}" method="post">
+    <p>
+        Наименование:
+        <input type="text" th:field="*{name}"/>
+    </p>
+    <p>
+        Примечание:
+        <input type="text" th:field="*{note}"/>
+    </p>
+    <button type="submit">Создать</button>
+</form>
+</body>
+</html>
